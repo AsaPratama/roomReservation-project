@@ -14,4 +14,9 @@ use App\Http\Controllers\userController;
 |
 */
 
+
+
+//register
 Route::get('/',[userController::class,'index']);
+Route::post('/register',[userController::class,'store']);
+
