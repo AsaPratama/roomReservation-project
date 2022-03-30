@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class userController extends Controller
 {
@@ -41,7 +42,7 @@ class userController extends Controller
         ]);
         $validated['password'] = bcrypt($validated['password']);
         User::create($validated);
-        return redirect()->intended('/');
+        return redirect()->intended('/login');
     }
 
     /**
@@ -50,9 +51,9 @@ class userController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function loginview()
     {
-        //
+        return view('login');
     }
 
     /**
@@ -61,9 +62,21 @@ class userController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function authenticate(Request $request)
+    {   
+        $credentials = $request->validate([
+            'name' => ['required'],
+            'password' => ['required'],
+        ]);
+ 
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            
+            return redirect()->intended('#');
+        }
+ 
+        return back()->withErrors(['Nama atau password salah']);
+        
     }
 
     /**

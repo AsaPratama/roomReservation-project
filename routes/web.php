@@ -20,3 +20,6 @@ use App\Http\Controllers\userController;
 Route::get('/',[userController::class,'index']);
 Route::post('/register',[userController::class,'store']);
 
+//login
+Route::get('/login', [userController::class, 'loginview']);
+Route::post('/login', [userController::class, 'authenticate']);
